@@ -1,0 +1,32 @@
+# Blend X-Ray runtime dependencies -- all versions pinned deliberately.
+#
+# ---------------------------------------------------------------------------
+# blender-asset-tracer: PINNED TO 1.23. Do not "upgrade" this.
+# ---------------------------------------------------------------------------
+# BAT 2.x removed standalone parsing and requires a Blender 5.1+ installation
+# to do its work. Blend X-Ray exists to inspect a hostile .blend file WITHOUT
+# launching Blender, so pulling in a version that needs Blender would defeat
+# the entire tool. blend_xray/scanner.py asserts the installed version at
+# runtime and refuses to run against anything else.
+blender-asset-tracer==1.23
+
+# ---------------------------------------------------------------------------
+# zstandard: required to read Blender 3.0+ files, which are zstd-compressed.
+# ---------------------------------------------------------------------------
+# NOTE: we intentionally do NOT install `blender-asset-tracer[zstandard]`.
+# That extra resolves to `zstandard ^0.16` (i.e. >=0.16,<0.17), released in
+# 2021, which ships no wheels for Python 3.11+. On a machine without a C
+# compiler the extra therefore fails to install at all. BAT only ever does a
+# plain `import zstandard` and uses the stable decompression API, so a current
+# release works fine and is what we pin instead.
+zstandard>=0.22,<1.0
+
+# ---------------------------------------------------------------------------
+# Not listed here on purpose: the graphical interface.
+# ---------------------------------------------------------------------------
+# The window is standard-library tkinter and needs nothing added. Drag-and-drop
+# is the one optional extra -- `pip install ".[gui]"` pulls in tkinterdnd2 --
+# and the window degrades to its "Choose a file..." buttons without it, so it
+# is never a hard requirement. PyInstaller (for building the portable .exe)
+# lives in the `build` extra for the same reason: it is a build-time tool, not
+# something a user running the tool should have to install.

@@ -1,0 +1,53 @@
+﻿EN -- WHERE THE SOURCE CODE IS
+
+Blend X-Ray is Copyright (C) 2026 Sacha Geneviève. It is free software under the
+GNU General Public License v3 or later -- full text in LICENSE, beside this file
+-- and it comes with ABSOLUTELY NO WARRANTY.
+
+The complete corresponding source code for THIS build is the repository at the
+tag v0.1.0:
+
+    https://github.com/gensacha/blend-xray/tree/v0.1.0
+
+The repository root is https://github.com/gensacha/blend-xray and the release
+page there carries this same zip. If either link does not resolve, that is a
+fault and not a policy: write to the address in the repository's SECURITY.md, or
+open an issue, and you will be sent the source.
+
+BlendXRay.exe also bundles blender-asset-tracer 1.23, which is GPLv2-or-later
+and is therefore part of the corresponding source. Its source archive for that
+exact version is at:
+
+    https://pypi.org/project/blender-asset-tracer/1.23/
+
+The licence and copyright notices of every other component packed into the
+executable -- CPython, Tcl/Tk, OpenSSL and the rest -- are in
+THIRD-PARTY-LICENSES.txt, beside this file.
+
+
+FR -- OU SE TROUVE LE CODE SOURCE
+
+Blend X-Ray est Copyright (C) 2026 Sacha Geneviève. C'est un logiciel libre sous
+licence GNU General Public License v3 ou ultérieure -- texte complet dans
+LICENSE, à côté de ce fichier -- et il est fourni SANS AUCUNE GARANTIE.
+
+L'intégralité du code source correspondant à CETTE version est le dépôt à
+l'étiquette v0.1.0 :
+
+    https://github.com/gensacha/blend-xray/tree/v0.1.0
+
+La racine du dépôt est https://github.com/gensacha/blend-xray, et la page de
+publication qui s'y trouve porte cette même archive. Si l'un de ces liens ne
+répond pas, c'est une erreur et non une intention : écrivez à l'adresse indiquée
+dans le SECURITY.md du dépôt, ou ouvrez un ticket, et le code source vous sera
+transmis.
+
+BlendXRay.exe embarque également blender-asset-tracer 1.23, sous GPLv2 ou
+ultérieure, qui fait donc partie du code source correspondant. L'archive source
+de cette version exacte est ici :
+
+    https://pypi.org/project/blender-asset-tracer/1.23/
+
+Les mentions de licence et de copyright de tous les autres composants inclus
+dans l'exécutable -- CPython, Tcl/Tk, OpenSSL et les autres -- sont dans
+THIRD-PARTY-LICENSES.txt, à côté de ce fichier.

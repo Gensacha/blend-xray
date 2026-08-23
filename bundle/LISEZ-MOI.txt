@@ -1,0 +1,224 @@
+﻿BLEND X-RAY 0.1.0 -- liste le code caché dans un fichier .blend, sans ouvrir
+Blender.
+
+Copyright (C) 2026 Sacha Geneviève. Logiciel libre sous licence GNU General
+Public License v3 ou ultérieure ; texte complet dans le fichier LICENSE, à côté
+de celui-ci. Fourni SANS AUCUNE GARANTIE.
+
+CE QUE C'EST
+Un fichier .blend peut transporter du code Python, et Blender peut être réglé
+pour l'exécuter à la seconde où le fichier s'ouvre. Blend X-Ray lit le fichier
+et liste ce qu'il y a dedans : blocs de script, expressions de drivers, nœuds
+OSL / script, bibliothèques liées, chemins de fichiers -- et dit en mots
+ordinaires ce que chacun fait. Il ne lance jamais Blender et n'exécute,
+n'importe ni n'évalue jamais ce qu'il trouve ; il lit des octets. Il ne se
+connecte jamais à internet de lui-même, n'envoie aucune statistique et ne se
+met pas à jour tout seul. Il vous donne un inventaire, pas un verdict.
+Décider si un fichier mérite votre confiance reste votre décision.
+
+À FAIRE D'ABORD -- ÇA COMPTE PLUS QUE CET OUTIL
+Blender a un réglage qui décide si le script d'un fichier téléchargé a le droit
+de s'exécuter tout seul. Désactivé, un script embarqué ne s'exécute pas à
+l'ouverture du fichier, et toute cette famille d'attaques ne démarre jamais.
+C'est ça, la vraie protection ; Blend X-Ray ne fait que vous dire ce qu'il y a
+dedans.
+
+  Édition > Préférences… > Enregistrer et ouvrir >
+      « Lancement auto des scripts Python »
+
+  (Blender en anglais : Edit > Preferences… > Save & Load >
+      « Auto Run Python Scripts ». Le libellé exact varie un peu d'une version
+      de Blender à l'autre ; c'est toujours la première case de la section des
+      fichiers .blend.)
+
+Vérifiez que cette case est DÉCOCHÉE, et laissez-la ainsi. Elle est décochée à
+l'installation, mais des tutoriels et des add-ons de rig demandent souvent de
+l'activer, et elle reste alors cochée pendant des années. L'avertissement de
+Blender lui-même l'active aussi : quand un fichier veut lancer ses scripts, la
+boîte propose une case « Permanently allow execution of scripts » (autoriser
+définitivement l'exécution des scripts), et la cocher active le réglage pour
+tous les fichiers que vous ouvrirez ensuite, pas seulement celui-là. Si un rig
+en a besoin, cochez le réglage pour cette séance-là et décochez-le ensuite.
+Faites cette vérification maintenant, avant de scanner quoi que ce soit.
+
+COMMENT LE LANCER
+Dézippez ce dossier où vous voulez, double-cliquez sur BlendXRay.exe (voir les
+avertissements ci-dessous au premier lancement), puis déposez un .blend sur la
+fenêtre ou utilisez « Choisir un fichier... ». Désignez un dossier et tous les
+.blend qu'il contient sont parcourus.
+
+Rien n'est installé. Aucun droit administrateur n'est demandé, aucun service ne
+tourne en fond, et il n'y a pas de désinstallateur : supprimez le dossier et le
+programme n'est plus là.
+
+Il y a une seule chose qu'il peut écrire en dehors de son rapport, et seulement
+si vous appuyez sur le bouton prévu pour. « Ajouter au menu clic droit » ajoute
+une entrée « Inspecter avec Blend X-Ray » au menu qui s'ouvre quand vous faites
+un clic droit sur un .blend dans l'Explorateur. Cela écrit deux clés de registre
+sous HKEY_CURRENT_USER -- votre compte uniquement, aucune demande
+d'administrateur, aucun changement pour les autres comptes de la machine -- et
+cela ne s'approprie pas l'association des fichiers .blend : un double-clic sur
+un .blend ouvre toujours Blender. La fenêtre vous montre les clés exactes et la
+commande exacte avant d'écrire quoi que ce soit, et rien ne se passe tant que
+vous n'avez pas accepté.
+
+Ce bouton unique porte trois libellés, et celui que vous voyez vous dit où en
+est l'entrée :
+
+  « Ajouter au menu clic         Il n'y a pas encore d'entrée.
+  droit »
+
+  « Retirer du menu clic         Une entrée existe et lance cette copie de
+  droit »                        BlendXRay.exe. Appuyer dessus supprime les
+                                 deux clés, et rien d'autre.
+
+  « Réparer le menu clic         Une entrée existe, mais elle pointe vers un
+  droit »                        endroit où BlendXRay.exe ne se trouve plus :
+                                 l'élément de menu ne fait donc rien du tout.
+                                 Appuyer dessus vous montre d'abord la commande
+                                 périmée, puis la remplace.
+
+Ce troisième état s'atteint sans rien faire de travers. Si vous double-cliquez
+sur BlendXRay.exe directement depuis le zip au lieu de le décompresser d'abord,
+Windows l'extrait discrètement dans un dossier temporaire qu'il supprimera plus
+tard : l'entrée finit par pointer vers rien. Déplacer, renommer ou ré-extraire
+le dossier ensuite produit la même chose. Décompressez le dossier là où vous
+comptez le garder, et ajoutez l'entrée de menu depuis cet endroit-là.
+
+Si vous utilisez ce bouton un jour, appuyez sur « Retirer du menu clic droit »
+avant de supprimer le dossier. Sinon les deux clés restent en place et pointent
+vers un .exe qui n'existe plus, et l'entrée de menu ne fait rien. Si vous avez
+déjà supprimé le dossier, remettez l'.exe au même endroit un instant -- le
+bouton doit afficher « Retirer » pour que les clés soient supprimées --, appuyez
+dessus, puis supprimez-le de nouveau.
+
+L'AVERTISSEMENT WINDOWS AU PREMIER LANCEMENT
+Windows affiche un cadre bleu « Windows a protégé votre ordinateur » la
+première fois que vous lancez BlendXRay.exe. Attendez-vous à le voir. Il
+apparaît parce que cet .exe n'est pas signé numériquement -- un certificat de
+signature coûte 200 à 400 EUR par an, et cette dépense est reportée pour
+l'instant. Ce cadre veut dire que Windows ne reconnaît pas l'éditeur du
+fichier. C'est une information sur un certificat absent, pas sur le contenu du
+fichier.
+
+Pour passer outre :
+  1. Cliquez sur « Informations complémentaires », le petit lien à l'intérieur
+     du cadre bleu. Le bouton dont vous avez besoin reste caché tant que vous
+     ne l'avez pas fait.
+  2. Cliquez sur « Exécuter quand même ».
+Windows ne pose la question qu'une fois par machine.
+
+VOTRE ANTIVIRUS AUSSI PEUT RÉAGIR
+Il peut signaler le téléchargement, le mettre en quarantaine, voire supprimer
+cette archive pendant que vous la décompressez. Deux raisons ordinaires, dont
+aucune n'est un second avis sur le programme :
+
+  - Un exécutable en un seul fichier, non signé et fabriqué avec PyInstaller,
+    est une forme que beaucoup de moteurs d'analyse jugent suspecte à elle
+    seule.
+  - exemple-fichier-piege.blend, le fichier de démonstration de cette archive,
+    contient un script d'exemple écrit pour ressembler à la vraie attaque.
+    Beaucoup d'antivirus lisent à l'intérieur des archives, et les mots de ce
+    script sont exactement ceux qu'ils cherchent. C'est un mannequin
+    d'entraînement, sans aucune charge active -- voir plus bas -- mais un
+    antivirus ne peut pas faire la différence, et c'est un peu le but.
+
+Si cela arrive et que vous n'avez pas envie de discuter avec votre antivirus,
+n'ajoutez pas une exclusion générale sur un dossier juste pour faire taire un
+avertissement. Prenez plutôt la voie du code source.
+
+SI VOUS PRÉFÉREZ NE PAS LANCER UN BINAIRE TÉLÉCHARGÉ
+-- chez quelqu'un que rien ne vous oblige à croire, c'est exactement l'argument
+que cet outil tient au sujet des .blend -- alors ne le lancez pas. Le code
+source est public et court. Lisez-le et lancez-le depuis Python :
+
+    https://github.com/gensacha/blend-xray
+    py -3.12 -m venv .venv
+    .venv\Scripts\activate
+    pip install .
+    blend-xray scan fichier-suspect.blend
+
+(Python 3.11 ou 3.12, pas 3.13 ni au-delà -- le README du dépôt explique
+pourquoi.)
+
+COMMENT LIRE LE RÉSULTAT
+La première ligne du rapport est celle qu'il faut lire. Il y en a trois :
+
+  [✖] rouge  « Ce fichier contient du code qui sort de Blender. »
+             Il contacte le réseau, démarre un programme, s'inscrit dans votre
+             démarrage, va lire là où sont rangés les mots de passe, ou masque
+             ce qu'il fait. Ne l'ouvrez pas dans Blender ; faites-le regarder
+             par quelqu'un qui lit le Python.
+  [▲] orange « Ce fichier contient du code qui mérite un deuxième regard. »
+             Du code a été trouvé, que l'outil ne peut pas trancher seul. Les
+             scripts de rig atterrissent ici tous les jours. Voir la section
+             suivante.
+  [·] gris   « Rien trouvé dans les 5 catégories vérifiées. »
+             Aucune vérification n'a réagi. Ce n'est pas un feu vert : cette
+             ligne décrit ce qui a été regardé, et rien de plus.
+
+Sous la bannière, chaque bloc est affiché avec son code, la liste en clair de
+ce que ce code fait, et les mots exacts qui ont amené chaque ligne. Les URL,
+chemins et commandes système sont listés à part, pour que vous voyiez où un
+script veut aller.
+
+QUE FAIRE D'UNE BANNIÈRE ORANGE
+L'orange est le cas courant sur du vrai travail, et ce n'est pas une alarme.
+Cela veut dire que l'outil a trouvé du code et qu'il ne décidera pas à votre
+place. Dans l'ordre :
+
+  1. Lisez les phrases en langage ordinaire sous chaque bloc. C'est tout
+     l'intérêt de cet outil : vous n'avez pas besoin de lire le Python. Si
+     aucune ne parle d'internet, de lancer un autre programme, de vos fichiers
+     ou de masquer ce qui est fait, ce que vous avez sous les yeux est presque
+     certainement de la mécanique de rig ou d'interface.
+  2. Regardez les URL, chemins et commandes que le rapport liste séparément. Un
+     script d'interface de rig n'a rien à faire en train de contacter une
+     adresse.
+  3. Avec « Lancement auto des scripts Python » décoché, comme plus haut, vous
+     pouvez ouvrir le fichier sans que le script s'exécute. Dans l'espace de
+     travail Scripting de Blender, vous verrez alors le script posé là, et vous
+     pourrez le supprimer si vous n'en voulez pas.
+  4. Toujours indécis ? Demandez à la personne qui vous a donné le fichier à
+     quoi sert ce script. Un auteur de rig légitime répond à cette question
+     sans difficulté. Si la réponse est évasive, ou s'il n'y a personne à qui
+     demander et personne qui lit le Python, laissez le fichier fermé. Aucun
+     asset ne vaut une machine compromise.
+
+CE QUE CET OUTIL NE REGARDE PAS
+Une bannière grise n'est pas un feu vert. Elle veut dire que les cinq
+catégories listées dans le rapport n'ont rien donné -- et il y a des parties
+d'un .blend qu'il n'inventorie pas du tout :
+
+  - Les Geometry Nodes.
+  - Les chemins des bandes du Video Sequence Editor.
+  - Le contenu des fichiers empaquetés (packed files).
+  - Les propriétés personnalisées (custom properties).
+  - Tout ce qui est en dehors du fichier. Les scripts externes, l'OSL externe
+    et les bibliothèques liées sont signalés par leur chemin seulement ; Blend
+    X-Ray ne suit jamais un chemin et n'ouvre jamais ce qu'il y a au bout.
+  - Les fichiers écrits avant Blender 2.45, qu'il refuse franchement plutôt que
+    de deviner.
+
+Ce n'est pas non plus un antivirus, et quelqu'un qui veut lui cacher du code
+peut y arriver. Rien dans un rapport ne veut jamais dire qu'un fichier ne pose
+pas de problème.
+
+LE FICHIER D'EXEMPLE
+exemple-fichier-piege.blend est un fichier de démonstration fabriqué de zéro
+pour ce paquet : un « Rig_Ui.py » marqué en exécution automatique qui contacte
+une URL et passe une commande à PowerShell, et à côté un panneau d'interface de
+rig ordinaire. Il ne porte aucune charge active -- l'URL est dans le domaine
+.invalid, qui ne peut pas être résolu, et Blend X-Ray n'exécute pas ce qu'il
+lit. Déposez-le sur la fenêtre : la bannière passe au rouge.
+
+LICENCE ET CODE SOURCE
+Blend X-Ray est Copyright (C) 2026 Sacha Geneviève et est distribué sous licence
+GNU General Public License v3 ou ultérieure ; texte complet dans le fichier
+LICENSE, à côté de celui-ci. Il s'appuie sur blender-asset-tracer
+(GPLv2-or-later). THIRD-PARTY-LICENSES.txt, également dans cette archive, porte
+les mentions de licence et de copyright de tout ce que BlendXRay.exe embarque.
+Code source, problèmes et versions : https://github.com/gensacha/blend-xray
+
+Blender est une marque déposée de la Blender Foundation. Blend X-Ray est un
+projet indépendant, sans affiliation ni approbation de sa part.

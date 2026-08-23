@@ -1,0 +1,43 @@
+Blend X-Ray -- inventory the code hidden inside a .blend file
+Copyright (C) 2026 Sacha Geneviève
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+The full text of the licence is in the file LICENSE beside this one, and
+every source file carries the matching SPDX-License-Identifier line.
+
+---------------------------------------------------------------------------
+
+WHY GPLv3, AND NOT A CHOICE
+
+Blend X-Ray links against blender-asset-tracer, which is GPLv2-or-later. A
+work built on and linking against a GPL library must be distributed under
+GPL-compatible terms, and GPLv2-or-later permits redistribution under GPLv3.
+So the licence is inherited from a dependency rather than picked. README.md
+says so at more length, under "Licence -- why GPLv3 and not MIT".
+
+THIRD-PARTY COMPONENTS
+
+The source tree contains no third-party code. The published Windows
+executable, however, is a single-file PyInstaller build that packs the Python
+interpreter, Tcl/Tk and several libraries inside it; their licences and
+copyright notices ship beside it as THIRD-PARTY-LICENSES.txt, and the source
+of that file is bundle/THIRD-PARTY-LICENSES.txt in this repository.
+
+TRADEMARKS
+
+Blender is a registered trademark of the Blender Foundation. Blend X-Ray is an
+independent project, not affiliated with or endorsed by it. The project name
+uses the file extension .blend rather than the mark itself, and should keep
+doing so.

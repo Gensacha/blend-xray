@@ -1,0 +1,131 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "blend-xray"
+# Read from blend_xray/_version.py (see [tool.setuptools.dynamic] below), not
+# repeated here. The version now reaches four surfaces -- `--version`, the JSON
+# report, the window title and the exe's VERSIONINFO resource -- and every one
+# of them reads blend_xray.__version__, which re-exports it. A bump is one
+# edit, in one file.
+dynamic = ["version"]
+description = "Inventory the code hidden inside a .blend file, without opening Blender."
+readme = { file = "README.md", content-type = "text/markdown" }
+# Upper bound is deliberate and tested, not defensive. blender-asset-tracer is
+# pinned to 1.23, which predates Python 3.13; on 3.14 the dependency set does
+# not resolve. 3.11 and 3.12 are the versions the test suite is run against.
+requires-python = ">=3.11,<3.13"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
+authors = [{ name = "Sacha Geneviève", email = "gensacha@hotmail.fr" }]
+maintainers = [{ name = "Sacha Geneviève", email = "gensacha@hotmail.fr" }]
+keywords = [
+    "blender",
+    "blend",
+    "security",
+    "malware",
+    "static-analysis",
+    "inspection",
+    "vfx",
+    "3d",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Environment :: Win32 (MS Windows)",
+    "Environment :: X11 Applications",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Information Technology",
+    # No "License ::" classifier: PEP 639 supersedes it with the SPDX
+    # `license` expression above, and setuptools rejects having both.
+    "Natural Language :: English",
+    "Natural Language :: French",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Graphics :: 3D Modeling",
+    "Topic :: Security",
+    "Topic :: Utilities",
+]
+
+# blender-asset-tracer is PINNED. See README: 2.x dropped standalone parsing
+# and requires a Blender 5.1+ install, which would defeat the entire tool.
+dependencies = ["blender-asset-tracer==1.23", "zstandard>=0.22,<1.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4", "ruff>=0.5"]
+# The window itself needs nothing beyond the standard library's tkinter.
+# tkinterdnd2 only adds drag-and-drop; without it the "Choose a file..."
+# buttons do the same job, so this stays optional on purpose.
+gui = ["tkinterdnd2>=0.4"]
+build = ["pyinstaller>=6.6"]
+
+[project.scripts]
+blend-xray = "blend_xray.cli:main"
+
+# gui-scripts, not scripts: on Windows this produces a launcher that opens no
+# console window behind the interface.
+[project.gui-scripts]
+blend-xray-gui = "blend_xray.gui.app:main"
+
+[project.urls]
+Homepage = "https://github.com/gensacha/blend-xray"
+Repository = "https://github.com/gensacha/blend-xray"
+Issues = "https://github.com/gensacha/blend-xray/issues"
+Changelog = "https://github.com/gensacha/blend-xray/releases"
+"Security policy" = "https://github.com/gensacha/blend-xray/blob/main/SECURITY.md"
+"Contributing" = "https://github.com/gensacha/blend-xray/blob/main/CONTRIBUTING.md"
+
+[tool.setuptools]
+packages = ["blend_xray", "blend_xray.gui"]
+
+# The single source of truth for the version. `attr:` reads the assignment
+# statically when it can, so this does not import the package at build time.
+[tool.setuptools.dynamic]
+version = { attr = "blend_xray._version.__version__" }
+
+# The known-script database is data, not code, and it must ship: without it the
+# identity layer degrades to "no entries" and every recognised release is
+# reported as an unknown script again. blend_xray/identity.py loads it from
+# beside itself, so it has to land inside the installed package.
+[tool.setuptools.package-data]
+blend_xray = ["known_scripts.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "S", "RUF", "FURB", "BLE"]
+ignore = [
+    # Long prose lines in the string catalogue and rule tables are clearer
+    # unwrapped; E501 is handled by line-length where it matters.
+    "E501",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# The scanner parses deliberately hostile input. Every field read is wrapped so
+# that one corrupt datablock degrades into a warning instead of aborting the
+# whole scan -- the alternative is a tool that dies on the files it most needs
+# to inspect. Broad excepts and try/except/continue are the point here, and
+# non-fatal problems are surfaced through ScanResult.warnings rather than logs.
+"blend_xray/scanner.py" = ["BLE001", "S112"]
+"blend_xray/guards.py" = ["BLE001"]
+"blend_xray/explain.py" = ["BLE001"]
+"blend_xray/cli.py" = ["BLE001"]
+# The known-script database is a data file that can be absent, truncated,
+# hand-edited or corrupt, and it is an *optional* context layer. Enumerating
+# the exception types it can produce was tried and was wrong -- a JSON integer
+# over CPython's 4300-digit conversion limit raises a bare ValueError, and
+# deeply nested JSON raises RecursionError. Both escaped the precise tuple and
+# aborted an entire batch scan. The contract is the outcome: bad data costs
+# identity context, never the scan.
+"blend_xray/identity.py" = ["BLE001"]
+# Tests build byte-level fixtures and assert on internals.
+"tests/*" = ["S101", "S603", "RUF059"]

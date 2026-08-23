@@ -1,0 +1,31 @@
+# Virtualenv — recreated from requirements.txt, never committed.
+.venv/
+
+# Build artefacts. The frozen .exe is a release asset, not source.
+build/
+dist/
+*.egg-info/
+*.spec.bak
+
+# Python bytecode and tool caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Editor / OS noise
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+
+# Measurement corpora are third-party files that are not ours to redistribute,
+# and they are large. One `git add -A` in a tree holding a downloaded corpus
+# would put them in history permanently, so the blanket rule comes first.
+*.blend
+
+# The one exception: bundle/ holds SOURCES, and the demo file is one of them.
+# It shipped once carrying a placeholder URL precisely because it lived only
+# inside a built zip, where no grep over the working tree could reach it.
+!bundle/*.blend
