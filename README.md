@@ -11,8 +11,8 @@ It is written for 3D artists and students, by a VFX artist and Houdini teacher �
 not by a security professional, and it does not pretend otherwise.
 
 **Download for Windows** (no Python needed) — a zip holding one `.exe`, pay what
-you want with a 0 EUR minimum: **`GUMROAD_URL_PLACEHOLDER`** · also on the
-[GitHub releases page](https://github.com/gensacha/blend-xray/releases). The
+you want with a 0 EUR minimum:
+**<https://7179206757975.gumroad.com/l/blend-xray>**. The
 executable is **unsigned**, so Windows and possibly your antivirus will complain
 on first run — read
 [The downloadable executable, and why it is unsigned](#the-downloadable-executable-and-why-it-is-unsigned)
